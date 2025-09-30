@@ -1,8 +1,11 @@
 import type React from "react";
+import PageLayout from "./PageLayout";
 
 const LoginPage: React.FC = () =>{
     return(
-        <h1>Login Page</h1>
+        <PageLayout>
+            <h1>Login Page</h1>
+        </PageLayout>
     );
 };
 
