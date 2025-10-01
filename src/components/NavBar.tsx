@@ -2,7 +2,7 @@ import type React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Button from 'react-bootstrap/Button';
+import LoginButton from './LoginButton';
 
 const NavBar :React.FC = () => {
     return (
@@ -16,7 +16,7 @@ const NavBar :React.FC = () => {
                         <Nav.Link href="#dashboard">Create Task</Nav.Link>
                     </Nav>
                     <Nav>
-                        <Button variant="outline-primary">Log In</Button>
+                        <LoginButton/>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
