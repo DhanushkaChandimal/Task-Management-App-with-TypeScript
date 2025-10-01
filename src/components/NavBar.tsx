@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 
 const NavBar :React.FC = () => {
     return (
@@ -17,6 +18,7 @@ const NavBar :React.FC = () => {
                     </Nav>
                     <Nav>
                         <LoginButton/>
+                        <LogoutButton/>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
