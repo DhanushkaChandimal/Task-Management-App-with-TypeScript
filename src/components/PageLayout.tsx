@@ -1,6 +1,5 @@
 import type React from "react"
 import Container from "react-bootstrap/Container";
-import Col from "react-bootstrap/Col";
 import Navbar from "./NavBar";
 
 type PageLayoutProps = {
@@ -9,11 +8,16 @@ type PageLayoutProps = {
 
 const PageLayout: React.FC<PageLayoutProps> = ({children}) => {
     return(
-        <Container>
-            <Col>
-                <Navbar/>
-            </Col>
-            {children}
+        <Container className="d-flex flex-column min-vh-100">
+            <Navbar/>
+            
+            <main className="flex-grow-1">
+                {children}
+            </main>
+            
+            <footer className="bg-dark text-white py-3 text-center">
+                <p className="mb-0">&copy; 2025 Dhanushka. All rights reserved.</p>
+            </footer>
         </Container>
     );
 };
