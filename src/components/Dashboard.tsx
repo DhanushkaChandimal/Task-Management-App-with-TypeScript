@@ -36,6 +36,15 @@ const Dashboard : React.FC = () => {
         setTasks(tasks.filter(task => task.id !== id));
     };
 
+    const getPriorityColor = (priority: string) => {
+        switch (priority) {
+            case "high": return "danger";
+            case "medium": return "warning";
+            case "low": return "success";
+            default: return "secondary";
+        }
+    };
+
     return(
         <PageLayout>
             <h1>Dashboard</h1>
@@ -69,7 +78,7 @@ const Dashboard : React.FC = () => {
                                 </div>
                                 <small className="text-muted">Due: {task.dueDate}</small>
                             </div>
-                            <Badge className="me-2">
+                            <Badge bg={getPriorityColor(task.priority)} className="me-2">
                                 {task.priority}
                             </Badge>
                             <Button 
