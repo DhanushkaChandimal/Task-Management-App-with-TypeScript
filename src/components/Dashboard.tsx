@@ -22,6 +22,7 @@ type Task = {
 
 const Dashboard : React.FC = () => {
     const navigate = useNavigate();
+    const [filter, setFilter] = useState<string>("all");
 
     const [tasks, setTasks] = useState<Task[]>([
         { id: 1, text: "Complete project proposal", priority: "high", completed: false, dueDate: "2025-10-05" },
@@ -52,6 +53,36 @@ const Dashboard : React.FC = () => {
             default: return "secondary";
         }
     };
+
+    const getFilteredTasks = () => {
+        switch (filter) {
+            case "pending":
+                return tasks.filter(task => !task.completed);
+            case "completed":
+                return tasks.filter(task => task.completed);
+            case "high":
+                return tasks.filter(task => task.priority === "high");
+            case "medium":
+                return tasks.filter(task => task.priority === "medium");
+            case "low":
+                return tasks.filter(task => task.priority === "low");
+            default:
+                return tasks;
+        }
+    };
+
+    const getFilterLabel = () => {
+        switch (filter) {
+            case "pending": return "Pending Tasks";
+            case "completed": return "Completed Tasks";
+            case "high": return "High Priority";
+            case "medium": return "Medium Priority";
+            case "low": return "Low Priority";
+            default: return "All Tasks";
+        }
+    };
+
+    const filteredTasks = getFilteredTasks();
 
     return(
         <PageLayout>
@@ -143,36 +174,85 @@ const Dashboard : React.FC = () => {
                         <Card className="border-0 shadow-sm">
                             <Card.Header className="bg-white border-0">
                                 <div className="d-flex justify-content-between align-items-center">
-                                    <h5 className="mb-0">Tasks</h5>
+                                    <h5 className="mb-0">Tasks ({getFilterLabel()})</h5>
                                     <Dropdown>
                                         <Dropdown.Toggle variant="outline-secondary" size="sm">
-                                            Filter
+                                            {getFilterLabel()}
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
-                                            <Dropdown.Item>All Tasks</Dropdown.Item>
-                                            <Dropdown.Item>Pending</Dropdown.Item>
-                                            <Dropdown.Item>Completed</Dropdown.Item>
-                                            <Dropdown.Item>High Priority</Dropdown.Item>
+                                            <Dropdown.Item 
+                                                active={filter === "all"}
+                                                onClick={() => setFilter("all")}
+                                            >
+                                                All Tasks
+                                            </Dropdown.Item>
+                                            <Dropdown.Item 
+                                                active={filter === "pending"}
+                                                onClick={() => setFilter("pending")}
+                                            >
+                                                Pending
+                                            </Dropdown.Item>
+                                            <Dropdown.Item 
+                                                active={filter === "completed"}
+                                                onClick={() => setFilter("completed")}
+                                            >
+                                                Completed
+                                            </Dropdown.Item>
+                                            <Dropdown.Divider />
+                                            <Dropdown.Item 
+                                                active={filter === "high"}
+                                                onClick={() => setFilter("high")}
+                                            >
+                                                High Priority
+                                            </Dropdown.Item>
+                                            <Dropdown.Item 
+                                                active={filter === "medium"}
+                                                onClick={() => setFilter("medium")}
+                                            >
+                                                Medium Priority
+                                            </Dropdown.Item>
+                                            <Dropdown.Item 
+                                                active={filter === "low"}
+                                                onClick={() => setFilter("low")}
+                                            >
+                                                Low Priority
+                                            </Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </div>
                             </Card.Header>
                             <Card.Body>
-                                {tasks.length === 0 ? (
+                                {filteredTasks.length === 0 ? (
                                     <Alert variant="info" className="text-center">
-                                        <h6>No tasks yet!</h6>
-                                        <p className="mb-0">Create your first task to get started.</p>
-                                        <Button 
-                                            variant="primary" 
-                                            className="mt-3"
-                                            onClick={() => navigate('/create-task')}
-                                        >
-                                            Create Task
-                                        </Button>
+                                        {tasks.length === 0 ? (
+                                            <div>
+                                                <h6>No tasks yet!</h6>
+                                                <p className="mb-0">Create your first task to get started.</p>
+                                                <Button 
+                                                    variant="primary" 
+                                                    className="mt-3"
+                                                    onClick={() => navigate('/create-task')}
+                                                >
+                                                    Create Task
+                                                </Button>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <h6>No tasks match the current filter</h6>
+                                                <p className="mb-0">Try selecting a different filter or create a new task.</p>
+                                                <Button 
+                                                    variant="outline-primary" 
+                                                    className="mt-3 me-2"
+                                                    onClick={() => setFilter("all")}
+                                                >
+                                                    Show All Tasks
+                                                </Button>
+                                            </div>
+                                        )}
                                     </Alert>
                                 ) : (
                                     <div>
-                                        {tasks.map((task) => (
+                                        {filteredTasks.map((task) => (
                                             <div key={task.id} className="d-flex align-items-center p-3 mb-2 bg-light rounded">
                                                 <Form.Check
                                                     type="checkbox"
