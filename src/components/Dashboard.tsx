@@ -5,6 +5,7 @@ import PageLayout from "./PageLayout";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import Badge from "react-bootstrap/Badge";
 
 type Task = {
     id: number;
@@ -68,7 +69,10 @@ const Dashboard : React.FC = () => {
                                 </div>
                                 <small className="text-muted">Due: {task.dueDate}</small>
                             </div>
-                             <Button 
+                            <Badge className="me-2">
+                                {task.priority}
+                            </Badge>
+                            <Button 
                                 variant="outline-danger" 
                                 size="sm"
                                 onClick={() => deleteTask(task.id)}
