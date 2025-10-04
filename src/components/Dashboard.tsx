@@ -10,6 +10,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
+import Dropdown from "react-bootstrap/Dropdown";
 
 type Task = {
     id: number;
@@ -139,49 +140,69 @@ const Dashboard : React.FC = () => {
 
                 <Row>
                     <Col>
-                        {tasks.length === 0 ? (
-                            <Alert variant="info" className="text-center">
-                                <h6>No tasks yet!</h6>
-                                <p className="mb-0">Create your first task to get started.</p>
-                                <Button 
-                                    variant="primary" 
-                                    className="mt-3"
-                                    onClick={() => navigate('/create-task')}
-                                >
-                                    Create Task
-                                </Button>
-                            </Alert>
-                        ) : (
-                            <div>
-                                {tasks.map((task) => (
-                                    <div key={task.id} className="d-flex align-items-center p-3 mb-2 bg-light rounded">
-                                        <Form.Check
-                                            type="checkbox"
-                                            id={`task-${task.id}`}
-                                            checked={task.completed}
-                                            onChange={() => toggleTask(task.id)}
-                                            className="me-3"
-                                        />
-                                        <div className="flex-grow-1">
-                                            <div className={`${task.completed ? 'text-decoration-line-through text-muted' : ''}`}>
-                                                {task.text}
-                                            </div>
-                                            <small className="text-muted">Due: {task.dueDate}</small>
-                                        </div>
-                                        <Badge bg={getPriorityColor(task.priority)} className="me-2">
-                                            {task.priority}
-                                        </Badge>
+                        <Card className="border-0 shadow-sm">
+                            <Card.Header className="bg-white border-0">
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <h5 className="mb-0">Tasks</h5>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="outline-secondary" size="sm">
+                                            Filter
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item>All Tasks</Dropdown.Item>
+                                            <Dropdown.Item>Pending</Dropdown.Item>
+                                            <Dropdown.Item>Completed</Dropdown.Item>
+                                            <Dropdown.Item>High Priority</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </div>
+                            </Card.Header>
+                            <Card.Body>
+                                {tasks.length === 0 ? (
+                                    <Alert variant="info" className="text-center">
+                                        <h6>No tasks yet!</h6>
+                                        <p className="mb-0">Create your first task to get started.</p>
                                         <Button 
-                                            variant="outline-danger" 
-                                            size="sm"
-                                            onClick={() => deleteTask(task.id)}
+                                            variant="primary" 
+                                            className="mt-3"
+                                            onClick={() => navigate('/create-task')}
                                         >
-                                            🗑️
+                                            Create Task
                                         </Button>
+                                    </Alert>
+                                ) : (
+                                    <div>
+                                        {tasks.map((task) => (
+                                            <div key={task.id} className="d-flex align-items-center p-3 mb-2 bg-light rounded">
+                                                <Form.Check
+                                                    type="checkbox"
+                                                    id={`task-${task.id}`}
+                                                    checked={task.completed}
+                                                    onChange={() => toggleTask(task.id)}
+                                                    className="me-3"
+                                                />
+                                                <div className="flex-grow-1">
+                                                    <div className={`${task.completed ? 'text-decoration-line-through text-muted' : ''}`}>
+                                                        {task.text}
+                                                    </div>
+                                                    <small className="text-muted">Due: {task.dueDate}</small>
+                                                </div>
+                                                <Badge bg={getPriorityColor(task.priority)} className="me-2">
+                                                    {task.priority}
+                                                </Badge>
+                                                <Button 
+                                                    variant="outline-danger" 
+                                                    size="sm"
+                                                    onClick={() => deleteTask(task.id)}
+                                                >
+                                                    🗑️
+                                                </Button>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
-                        )}
+                                )}
+                            </Card.Body>
+                        </Card>
                     </Col>
                 </Row>
             </Container>
