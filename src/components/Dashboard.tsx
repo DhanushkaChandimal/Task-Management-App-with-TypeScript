@@ -18,12 +18,18 @@ const Dashboard : React.FC = () => {
     const navigate = useNavigate();
 
     const [tasks, setTasks] = useState<Task[]>([
-        // { id: 1, text: "Complete project proposal", priority: "high", completed: false, dueDate: "2025-10-05" },
-        // { id: 2, text: "Review client feedback", priority: "medium", completed: true, dueDate: "2025-10-03" },
-        // { id: 3, text: "Schedule team meeting", priority: "low", completed: false, dueDate: "2025-10-04" },
-        // { id: 4, text: "Update project documentation", priority: "medium", completed: false, dueDate: "2025-10-06" },
-        // { id: 5, text: "Prepare weekly report", priority: "high", completed: false, dueDate: "2025-10-07" }
+        { id: 1, text: "Complete project proposal", priority: "high", completed: false, dueDate: "2025-10-05" },
+        { id: 2, text: "Review client feedback", priority: "medium", completed: true, dueDate: "2025-10-03" },
+        { id: 3, text: "Schedule team meeting", priority: "low", completed: false, dueDate: "2025-10-04" },
+        { id: 4, text: "Update project documentation", priority: "medium", completed: false, dueDate: "2025-10-06" },
+        { id: 5, text: "Prepare weekly report", priority: "high", completed: false, dueDate: "2025-10-07" }
     ]);
+
+    const toggleTask = (id: number) => {
+        setTasks(tasks.map(task => 
+            task.id === id ? { ...task, completed: !task.completed } : task
+        ));
+    };
 
     return(
         <PageLayout>
@@ -49,6 +55,7 @@ const Dashboard : React.FC = () => {
                                 type="checkbox"
                                 id={`task-${task.id}`}
                                 checked={task.completed}
+                                onChange={() => toggleTask(task.id)}
                                 className="me-3"
                             />
                             <div className="flex-grow-1">
