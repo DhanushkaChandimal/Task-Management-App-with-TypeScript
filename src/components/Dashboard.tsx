@@ -1,6 +1,7 @@
 import type React from "react";
 import { useState } from "react";
 import PageLayout from "./PageLayout";
+import Form from "react-bootstrap/Form";
 
 const Dashboard : React.FC = () => {
 
@@ -15,6 +16,25 @@ const Dashboard : React.FC = () => {
     return(
         <PageLayout>
             <h1>Dashboard</h1>
+
+            <div>
+                {tasks.map((task) => (
+                    <div key={task.id} className="d-flex align-items-center p-3 mb-2 bg-light rounded">
+                        <Form.Check
+                            type="checkbox"
+                            id={`task-${task.id}`}
+                            checked={task.completed}
+                            className="me-3"
+                        />
+                        <div className="flex-grow-1">
+                            <div className={`${task.completed ? 'text-decoration-line-through text-muted' : ''}`}>
+                                {task.text}
+                            </div>
+                            <small className="text-muted">Due: {task.dueDate}</small>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </PageLayout>
     );
 };
