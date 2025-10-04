@@ -31,6 +31,10 @@ const Dashboard : React.FC = () => {
         ));
     };
 
+    const deleteTask = (id: number) => {
+        setTasks(tasks.filter(task => task.id !== id));
+    };
+
     return(
         <PageLayout>
             <h1>Dashboard</h1>
@@ -64,6 +68,13 @@ const Dashboard : React.FC = () => {
                                 </div>
                                 <small className="text-muted">Due: {task.dueDate}</small>
                             </div>
+                             <Button 
+                                variant="outline-danger" 
+                                size="sm"
+                                onClick={() => deleteTask(task.id)}
+                            >
+                                🗑️
+                            </Button>
                         </div>
                     ))}
                 </div>
