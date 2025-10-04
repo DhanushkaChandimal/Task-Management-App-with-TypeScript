@@ -1,8 +1,10 @@
 import type React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import PageLayout from "./PageLayout";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
+import Button from "react-bootstrap/Button";
 
 type Task = {
     id: number;
@@ -13,6 +15,7 @@ type Task = {
 };
 
 const Dashboard : React.FC = () => {
+    const navigate = useNavigate();
 
     const [tasks, setTasks] = useState<Task[]>([
         // { id: 1, text: "Complete project proposal", priority: "high", completed: false, dueDate: "2025-10-05" },
@@ -30,6 +33,13 @@ const Dashboard : React.FC = () => {
                 <Alert variant="info" className="text-center">
                     <h6>No tasks yet!</h6>
                     <p className="mb-0">Create your first task to get started.</p>
+                    <Button 
+                        variant="primary" 
+                        className="mt-3"
+                        onClick={() => navigate('/create-task')}
+                    >
+                        Create Task
+                    </Button>
                 </Alert>
             ) : (
                 <div>
