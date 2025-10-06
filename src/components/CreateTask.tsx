@@ -16,13 +16,26 @@ const statusOptions = [
     {value: "completed", label: "Completed"}
 ];
 
+type Priority = "low" | "medium" | "high";
+type Status = "pending" | "in-progress" | "completed";
+
+interface TaskData {
+    title: string;
+    description: string;
+    priority: Priority;
+    status: Status;
+    dueDate: string;
+};
+
 const CreateTask : React.FC = () => {
 
-    const [title, setTitle] = useState<string>("")
-    const [description, setDescription] = useState<string>("")
-    const [priority, setPriority] = useState<"high" | "medium" | "low">()
-    const [status, setStatus] = useState<"pending" | "in-progress" | "completed">()
-    const [dueDate, setDueDate] = useState<string>("")
+    const [formData, setFormData] = useState<TaskData>({
+        title: "",
+        description: "",
+        priority: "low",
+        status: "pending",
+        dueDate: ""
+    });
     const [validated, setValidated] = useState<boolean>(false)
 
     const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {
@@ -46,8 +59,8 @@ const CreateTask : React.FC = () => {
                     <Form.Control
                         type="text"
                         placeholder="Enter title here"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={formData.title}
+                        onChange={(e) => setFormData({...formData, ["title"]: e.target.value})}
                         required
                     />
                     <Form.Control.Feedback type="invalid">
@@ -63,8 +76,8 @@ const CreateTask : React.FC = () => {
                         as="textarea"
                         rows={4}
                         placeholder="Enter your description here"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={formData.description}
+                        onChange={(e) => setFormData({...formData, ["description"]: e.target.value})}
                         required
                     />
                     <Form.Control.Feedback type="invalid">
@@ -75,8 +88,8 @@ const CreateTask : React.FC = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Priority</Form.Label>
                     <Form.Select
-                        value={priority}
-                        onChange={(e) => setPriority(e.target.value as "high" | "medium" | "low")}
+                        value={formData.priority}
+                        onChange={(e) => setFormData({...formData, ["priority"]: e.target.value})}
                         required
                     >
                         {priorityOptions.map(option => (
@@ -90,8 +103,8 @@ const CreateTask : React.FC = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Status</Form.Label>
                     <Form.Select
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value as "pending" | "in-progress" | "completed")}
+                        value={formData.status}
+                        onChange={(e) => setFormData({...formData, ["status"]: e.target.value})}
                         required
                     >
                         {statusOptions.map(option => (
@@ -108,8 +121,8 @@ const CreateTask : React.FC = () => {
                     </Form.Label>
                     <Form.Control
                         type="date"
-                        value={dueDate}
-                        onChange={(e) => setDueDate(e.target.value)}
+                        value={formData.dueDate}
+                        onChange={(e) => setFormData({...formData, ["dueDate"]: e.target.value})}
                         required
                     />
                     <Form.Control.Feedback type="invalid">
