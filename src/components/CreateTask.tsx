@@ -11,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 import TaskContexts from "../context/TaskContexts";
 
 const priorityOptions = [
-    {value: "low", label: "Low Priority"},
-    {value: "medium", label: "Medium Priority"},
-    {value: "high", label: "High Priority"}
+    {value: "low", label: "Low Priority", color: "success", icon: "🟢"},
+    {value: "medium", label: "Medium Priority", color: "warning", icon: "🟡"},
+    {value: "high", label: "High Priority", color: "danger", icon: "🔴"}
 ];
 
 type Priority = "low" | "medium" | "high";
@@ -136,7 +136,7 @@ const CreateTask : React.FC = () => {
                                                 >
                                                     {priorityOptions.map(option => (
                                                         <option key={option.value} value={option.value}>
-                                                            {option.label}
+                                                            {option.icon} {option.label}
                                                         </option>
                                                     ))}
                                                 </Form.Select>
