@@ -11,20 +11,13 @@ const priorityOptions = [
     {value: "high", label: "High Priority"}
 ];
 
-const statusOptions = [
-    {value: "pending", label: "Pending"},
-    {value: "in-progress", label: "In Progress"},
-    {value: "completed", label: "Completed"}
-];
-
 type Priority = "low" | "medium" | "high";
-type Status = "pending" | "in-progress" | "completed";
 
 interface TaskData {
     title: string;
     description: string;
     priority: Priority;
-    status: Status;
+    completed: boolean;
     dueDate: string;
 };
 
@@ -34,7 +27,7 @@ const CreateTask : React.FC = () => {
         title: "",
         description: "",
         priority: "low",
-        status: "pending",
+        completed: false,
         dueDate: ""
     });
     const [validated, setValidated] = useState<boolean>(false)
@@ -110,21 +103,6 @@ const CreateTask : React.FC = () => {
                         required
                     >
                         {priorityOptions.map(option => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                    <Form.Label>Status</Form.Label>
-                    <Form.Select
-                        value={formData.status}
-                        onChange={(e) => setFormData({...formData, ["status"]: e.target.value as Status})}
-                        required
-                    >
-                        {statusOptions.map(option => (
                             <option key={option.value} value={option.value}>
                                 {option.label}
                             </option>

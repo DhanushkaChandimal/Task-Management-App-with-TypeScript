@@ -1,5 +1,5 @@
 import type React from "react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PageLayout from "./PageLayout";
 import Form from "react-bootstrap/Form";
@@ -11,26 +11,13 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
-
-type Task = {
-    id: number;
-    text: string;
-    priority: "high" | "medium" | "low";
-    completed: boolean;
-    dueDate: string;
-};
+import TaskContexts from "../context/TaskContexts";
 
 const Dashboard : React.FC = () => {
+    const { tasks, setTasks } = useContext(TaskContexts);
     const navigate = useNavigate();
     const [filter, setFilter] = useState<string>("all");
 
-    const [tasks, setTasks] = useState<Task[]>([
-        { id: 1, text: "Complete project proposal", priority: "high", completed: false, dueDate: "2025-10-05" },
-        { id: 2, text: "Review client feedback", priority: "medium", completed: true, dueDate: "2025-10-03" },
-        { id: 3, text: "Schedule team meeting", priority: "low", completed: false, dueDate: "2025-10-04" },
-        { id: 4, text: "Update project documentation", priority: "medium", completed: false, dueDate: "2025-10-06" },
-        { id: 5, text: "Prepare weekly report", priority: "high", completed: false, dueDate: "2025-10-07" }
-    ]);
     const completedTasks = tasks.filter(task => task.completed).length;
     const totalTasks = tasks.length;
     const completionPercentage = (completedTasks / totalTasks) * 100;
@@ -263,7 +250,7 @@ const Dashboard : React.FC = () => {
                                                 />
                                                 <div className="flex-grow-1">
                                                     <div className={`${task.completed ? 'text-decoration-line-through text-muted' : ''}`}>
-                                                        {task.text}
+                                                        {task.title}
                                                     </div>
                                                     <small className="text-muted">Due: {task.dueDate}</small>
                                                 </div>
