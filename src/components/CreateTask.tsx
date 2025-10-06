@@ -74,7 +74,7 @@ const CreateTask : React.FC = () => {
             <h1>Create Task</h1>
             <Form onSubmit={handleSubmit} noValidate validated={validated}>
                 <Form.Group className="mb-3">
-                    <Form.Label>
+                    <Form.Label className="fw-semibold">
                         Task Title <span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
@@ -92,7 +92,7 @@ const CreateTask : React.FC = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>
+                    <Form.Label className="fw-semibold">
                         Description <span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
@@ -110,7 +110,7 @@ const CreateTask : React.FC = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                    <Form.Label>Priority</Form.Label>
+                    <Form.Label className="fw-semibold">Priority</Form.Label>
                     <Form.Select
                         value={formData.priority}
                         onChange={(e) => setFormData({...formData, priority: e.target.value as Priority})}
@@ -125,7 +125,7 @@ const CreateTask : React.FC = () => {
                 </Form.Group>
                     
                 <Form.Group className="mb-3">
-                    <Form.Label>
+                    <Form.Label className="fw-semibold">
                         Due Date <span className="text-danger">*</span>
                     </Form.Label>
                     <Form.Control
