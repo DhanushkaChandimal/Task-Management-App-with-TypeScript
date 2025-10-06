@@ -1,9 +1,10 @@
 import type React from "react";
 import PageLayout from "./PageLayout";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { useNavigate } from "react-router-dom";
+import TaskContexts from "../context/TaskContexts";
 
 const priorityOptions = [
     {value: "low", label: "Low Priority"},
@@ -14,6 +15,7 @@ const priorityOptions = [
 type Priority = "low" | "medium" | "high";
 
 interface TaskData {
+    id: number;
     title: string;
     description: string;
     priority: Priority;
@@ -22,8 +24,10 @@ interface TaskData {
 };
 
 const CreateTask : React.FC = () => {
+    const { tasks, setTasks } = useContext(TaskContexts);
     const navigate = useNavigate();
     const [formData, setFormData] = useState<TaskData>({
+        id:0,
         title: "",
         description: "",
         priority: "low",
@@ -38,8 +42,12 @@ const CreateTask : React.FC = () => {
         const form = e.currentTarget as HTMLFormElement;
         if (form.checkValidity() === false) {
             e.stopPropagation();
+        }else{
+            setTasks([...tasks, formData]);
+            alert("Task created successfully!");
+            navigate("/dashboard");
         }
-        setValidated(true)
+        setValidated(true);
     }
 
     const handleCancel = () => {
