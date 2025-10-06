@@ -31,10 +31,27 @@ const TaskContexts = createContext<TaskContextType>({
 });
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
-  const [tasks, setTasks] = useState<TaskData[]>(dummyTasks);
+  const [tasks, setTasks] = useState<TaskData[]>(() => {
+    try {
+      const savedTasks = localStorage.getItem('tasks');
+      return savedTasks ? JSON.parse(savedTasks) : dummyTasks;
+    } catch (error) {
+      console.error('Error loading tasks from localStorage:', error);
+      return dummyTasks;
+    }
+  });
+
+  const updateTasks = (newTasks: TaskData[]) => {
+    setTasks(newTasks);
+    try {
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+    } catch (error) {
+      console.error('Error saving tasks to localStorage:', error);
+    }
+  };
   
   return (
-    <TaskContexts.Provider value={{ tasks, setTasks }}>
+    <TaskContexts.Provider value={{ tasks, setTasks: updateTasks }}>
       {children}
     </TaskContexts.Provider>
   );

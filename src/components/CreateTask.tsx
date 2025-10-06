@@ -42,13 +42,19 @@ const CreateTask : React.FC = () => {
         const form = e.currentTarget as HTMLFormElement;
         if (form.checkValidity() === false) {
             e.stopPropagation();
-        }else{
-            setTasks([...tasks, formData]);
+        } else {
+            // Generate a unique ID for the new task
+            const newTask: TaskData = {
+                ...formData,
+                id: Date.now(), // Generate unique ID using timestamp
+                completed: false // Ensure new tasks start as incomplete
+            };
+            setTasks([...tasks, newTask]);
             alert("Task created successfully!");
             navigate("/dashboard");
         }
         setValidated(true);
-    }
+    };
 
     const handleCancel = () => {
         const hasData = formData.title.trim() || formData.description.trim();
@@ -75,7 +81,7 @@ const CreateTask : React.FC = () => {
                         type="text"
                         placeholder="Please enter your task title here"
                         value={formData.title}
-                        onChange={(e) => setFormData({...formData, ["title"]: e.target.value})}
+                        onChange={(e) => setFormData({...formData, title: e.target.value})}
                         required
                         maxLength={100}
                         autoFocus
@@ -94,7 +100,7 @@ const CreateTask : React.FC = () => {
                         rows={4}
                         placeholder="Enter your description here"
                         value={formData.description}
-                        onChange={(e) => setFormData({...formData, ["description"]: e.target.value})}
+                        onChange={(e) => setFormData({...formData, description: e.target.value})}
                         required
                         maxLength={500}
                     />
@@ -107,7 +113,7 @@ const CreateTask : React.FC = () => {
                     <Form.Label>Priority</Form.Label>
                     <Form.Select
                         value={formData.priority}
-                        onChange={(e) => setFormData({...formData, ["priority"]: e.target.value as Priority})}
+                        onChange={(e) => setFormData({...formData, priority: e.target.value as Priority})}
                         required
                     >
                         {priorityOptions.map(option => (
@@ -125,7 +131,7 @@ const CreateTask : React.FC = () => {
                     <Form.Control
                         type="date"
                         value={formData.dueDate}
-                        onChange={(e) => setFormData({...formData, ["dueDate"]: e.target.value})}
+                        onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
                         required
                         min={new Date().toISOString().split('T')[0]}
                     />
