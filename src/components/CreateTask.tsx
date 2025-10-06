@@ -58,10 +58,12 @@ const CreateTask : React.FC = () => {
                     </Form.Label>
                     <Form.Control
                         type="text"
-                        placeholder="Enter title here"
+                        placeholder="Please enter your task title here"
                         value={formData.title}
                         onChange={(e) => setFormData({...formData, ["title"]: e.target.value})}
                         required
+                        maxLength={100}
+                        autoFocus
                     />
                     <Form.Control.Feedback type="invalid">
                         Title is required
@@ -79,6 +81,7 @@ const CreateTask : React.FC = () => {
                         value={formData.description}
                         onChange={(e) => setFormData({...formData, ["description"]: e.target.value})}
                         required
+                        maxLength={500}
                     />
                     <Form.Control.Feedback type="invalid">
                         Description is required
@@ -124,6 +127,7 @@ const CreateTask : React.FC = () => {
                         value={formData.dueDate}
                         onChange={(e) => setFormData({...formData, ["dueDate"]: e.target.value})}
                         required
+                        min={new Date().toISOString().split('T')[0]}
                     />
                     <Form.Control.Feedback type="invalid">
                         Invalid due date
