@@ -50,6 +50,9 @@ const CreateTask : React.FC = () => {
                         onChange={(e) => setTitle(e.target.value)}
                         required
                     />
+                    <Form.Control.Feedback type="invalid">
+                        Title is required
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -64,6 +67,9 @@ const CreateTask : React.FC = () => {
                         onChange={(e) => setDescription(e.target.value)}
                         required
                     />
+                    <Form.Control.Feedback type="invalid">
+                        Description is required
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
@@ -106,6 +112,9 @@ const CreateTask : React.FC = () => {
                         onChange={(e) => setDueDate(e.target.value)}
                         required
                     />
+                    <Form.Control.Feedback type="invalid">
+                        Invalid due date
+                    </Form.Control.Feedback>
                 </Form.Group>
 
                 <div>
