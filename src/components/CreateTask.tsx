@@ -3,6 +3,7 @@ import PageLayout from "./PageLayout";
 import { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 
 const priorityOptions = [
     {value: "low", label: "Low Priority"},
@@ -28,7 +29,7 @@ interface TaskData {
 };
 
 const CreateTask : React.FC = () => {
-
+    const navigate = useNavigate();
     const [formData, setFormData] = useState<TaskData>({
         title: "",
         description: "",
@@ -47,6 +48,19 @@ const CreateTask : React.FC = () => {
         }
         setValidated(true)
     }
+
+    const handleCancel = () => {
+        const hasData = formData.title.trim() || formData.description.trim();
+        
+        if (hasData) {
+            const confirmDiscard = window.confirm(
+                "You have unsaved data. Are you sure you want to cancel?"
+            );
+            if (!confirmDiscard) return;
+        }
+        
+        navigate("/dashboard");
+    };
 
     return (
         <PageLayout>
@@ -92,7 +106,7 @@ const CreateTask : React.FC = () => {
                     <Form.Label>Priority</Form.Label>
                     <Form.Select
                         value={formData.priority}
-                        onChange={(e) => setFormData({...formData, ["priority"]: e.target.value})}
+                        onChange={(e) => setFormData({...formData, ["priority"]: e.target.value as Priority})}
                         required
                     >
                         {priorityOptions.map(option => (
@@ -107,7 +121,7 @@ const CreateTask : React.FC = () => {
                     <Form.Label>Status</Form.Label>
                     <Form.Select
                         value={formData.status}
-                        onChange={(e) => setFormData({...formData, ["status"]: e.target.value})}
+                        onChange={(e) => setFormData({...formData, ["status"]: e.target.value as Status})}
                         required
                     >
                         {statusOptions.map(option => (
@@ -136,7 +150,12 @@ const CreateTask : React.FC = () => {
 
                 <div>
                     <Button type="submit">Create Task</Button>
-                    <Button>Cancel</Button>
+                    <Button
+                        variant="outline-secondary"
+                        onClick={handleCancel}
+                    >
+                        Cancel
+                    </Button>
                 </div>
             </Form>
         </PageLayout>
