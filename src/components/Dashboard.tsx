@@ -258,6 +258,14 @@ const Dashboard : React.FC = () => {
                                                     {task.priority}
                                                 </Badge>
                                                 <Button 
+                                                    variant="outline-primary" 
+                                                    size="sm"
+                                                    className="me-2"
+                                                    onClick={() => navigate(`/edit-task/${task.id}`)}
+                                                >
+                                                    ✏️
+                                                </Button>
+                                                <Button 
                                                     variant="outline-danger" 
                                                     size="sm"
                                                     onClick={() => deleteTask(task.id)}

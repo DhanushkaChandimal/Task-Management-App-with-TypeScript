@@ -47,11 +47,10 @@ const CreateTask : React.FC = () => {
         if (form.checkValidity() === false) {
             e.stopPropagation();
         } else {
-            // Generate a unique ID for the new task
             const newTask: TaskData = {
                 ...formData,
-                id: Date.now(), // Generate unique ID using timestamp
-                completed: false // Ensure new tasks start as incomplete
+                id: Date.now(),
+                completed: false
             };
             setTasks([...tasks, newTask]);
             alert("Task created successfully!");

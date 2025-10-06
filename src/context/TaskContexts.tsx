@@ -23,11 +23,13 @@ const dummyTasks: TaskData[] = [
 interface TaskContextType {
   tasks: TaskData[];
   setTasks: (tasks: TaskData[]) => void;
+  updateTask: (id: number, updatedTask: TaskData) => void;
 }
 
 const TaskContexts = createContext<TaskContextType>({
   tasks: dummyTasks,
-  setTasks: () => {}
+  setTasks: () => {},
+  updateTask: () => {}
 });
 
 export const TaskProvider = ({ children }: { children: ReactNode }) => {
@@ -49,9 +51,16 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
       console.error('Error saving tasks to localStorage:', error);
     }
   };
+
+  const updateTask = (id: number, updatedTask: TaskData) => {
+    const updatedTasks = tasks.map(task => 
+      task.id === id ? updatedTask : task
+    );
+    updateTasks(updatedTasks);
+  };
   
   return (
-    <TaskContexts.Provider value={{ tasks, setTasks: updateTasks }}>
+    <TaskContexts.Provider value={{ tasks, setTasks: updateTasks, updateTask }}>
       {children}
     </TaskContexts.Provider>
   );
