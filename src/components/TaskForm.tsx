@@ -1,13 +1,13 @@
 import type React from "react";
 import PageLayout from "./PageLayout";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TaskContexts from "../context/TaskContexts";
 
 const priorityOptions = [
@@ -25,35 +25,64 @@ interface TaskData {
     priority: Priority;
     completed: boolean;
     dueDate: string;
-};
+}
 
-const CreateTask : React.FC = () => {
-    const { tasks, setTasks } = useContext(TaskContexts);
+interface TaskFormProps {
+    mode?: 'create' | 'edit';
+}
+
+const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
+    const { tasks, setTasks, updateTask } = useContext(TaskContexts);
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
+    
+    const isEditMode = mode === 'edit' || Boolean(id);
+    
     const [formData, setFormData] = useState<TaskData>({
-        id:0,
+        id: 0,
         title: "",
         description: "",
         priority: "low",
         completed: false,
         dueDate: ""
     });
-    const [validated, setValidated] = useState<boolean>(false)
+    const [validated, setValidated] = useState<boolean>(false);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {
+    useEffect(() => {
+        if (isEditMode && id) {
+            const taskToEdit = tasks.find(task => task.id === parseInt(id));
+            if (taskToEdit) {
+                setFormData(taskToEdit);
+            }
+        }
+    }, [id, tasks, isEditMode]);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         
         const form = e.currentTarget as HTMLFormElement;
         if (form.checkValidity() === false) {
             e.stopPropagation();
         } else {
-            const newTask: TaskData = {
-                ...formData,
-                id: Date.now(),
-                completed: false
-            };
-            setTasks([...tasks, newTask]);
-            alert("Task created successfully!");
+            if (isEditMode) {
+                if (updateTask) {
+                    updateTask(formData.id, formData);
+                } else {
+                    const updatedTasks = tasks.map(task => 
+                        task.id === formData.id ? formData : task
+                    );
+                    setTasks(updatedTasks);
+                }
+                alert("Task updated successfully!");
+            } else {
+                const newTask: TaskData = {
+                    ...formData,
+                    id: Date.now(),
+                    completed: false
+                };
+                setTasks([...tasks, newTask]);
+                alert("Task created successfully!");
+            }
             navigate("/dashboard");
         }
         setValidated(true);
@@ -81,8 +110,10 @@ const CreateTask : React.FC = () => {
                             <Card.Header className="bg-primary text-white">
                                 <div className="d-flex justify-content-between align-items-center">
                                     <h3 className="mb-0">
-                                        <i className="me-2">➕</i>
-                                        Create New Task
+                                        <i className="me-2">
+                                            {isEditMode ? "✏️" : "➕"}
+                                        </i>
+                                        {isEditMode ? "Update Task" : "Create New Task"}
                                     </h3>
                                 </div>
                             </Card.Header>
@@ -161,12 +192,25 @@ const CreateTask : React.FC = () => {
                                         </Col>
                                     </Row>
 
+                                    {/* Show completion status in edit mode */}
+                                    {isEditMode && (
+                                        <Form.Group className="mb-3">
+                                            <Form.Check
+                                                type="checkbox"
+                                                id="completed-checkbox"
+                                                label="Mark as completed"
+                                                checked={formData.completed}
+                                                onChange={(e) => setFormData({...formData, completed: e.target.checked})}
+                                            />
+                                        </Form.Group>
+                                    )}
+
                                     <div className="d-flex gap-3 pt-3 border-top">
                                         <Button
                                             type="submit"
                                             className="flex-grow-1"
                                         >
-                                            Create Task
+                                            {isEditMode ? "Update Task" : "Create Task"}
                                         </Button>
                                         <Button
                                             variant="outline-secondary"
@@ -185,4 +229,4 @@ const CreateTask : React.FC = () => {
     );
 };
 
-export default CreateTask;
+export default TaskForm;
