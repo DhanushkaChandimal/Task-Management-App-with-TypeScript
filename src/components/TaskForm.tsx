@@ -47,12 +47,16 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
         dueDate: ""
     });
     const [validated, setValidated] = useState<boolean>(false);
+    const [error, setError] = useState<string>("");
 
     useEffect(() => {
         if (isEditMode && id) {
             const taskToEdit = tasks.find(task => task.id === parseInt(id));
             if (taskToEdit) {
                 setFormData(taskToEdit);
+                setError("");
+            } else {
+                setError("Task not found!");
             }
         }
     }, [id, tasks, isEditMode]);
@@ -100,6 +104,31 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
         
         navigate("/dashboard");
     };
+
+    if (error) {
+        return (
+            <PageLayout>
+                <Container className="py-4">
+                    <Row className="justify-content-center">
+                        <Col lg={8} xl={6}>
+                            <Card className="shadow-sm border-0">
+                                <Card.Body className="text-center p-4">
+                                    <h4 className="text-danger">{error}</h4>
+                                    <Button 
+                                        variant="primary" 
+                                        onClick={() => navigate("/dashboard")}
+                                        className="mt-3"
+                                    >
+                                        Back to Dashboard
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            </PageLayout>
+        );
+    }
 
     return (
         <PageLayout>
