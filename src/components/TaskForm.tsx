@@ -72,7 +72,9 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
         setShowToast(true);
         
         if (variant === 'success') {
-            navigate("/dashboard");
+            setTimeout(() => {
+                navigate("/dashboard");
+            }, 2000);
         }
     };
 
