@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard"
 import AuthenticationGuard from "./components/AuthenticationGuard"
 import TaskForm from "./components/TaskForm"
 import { TaskProvider } from "./context/TaskContexts"
+import NotFound from "./components/NotFound"
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/dashboard" element={<AuthenticationGuard component={Dashboard} />}></Route>
         <Route path="/create-task" element={<AuthenticationGuard component={() => <TaskForm mode="create" />} />}></Route>
         <Route path="/edit-task/:id" element={<AuthenticationGuard component={() => <TaskForm mode="edit" />} />}></Route>
+        <Route path="/*" element={<NotFound/>}></Route>
       </Routes>
     </TaskProvider>
   )
