@@ -1,6 +1,6 @@
 import type React from "react";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import PageLayout from "./PageLayout";
 import Form from "react-bootstrap/Form";
 import Alert from "react-bootstrap/Alert";
@@ -13,10 +13,29 @@ import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
 import TaskContexts from "../context/TaskContexts";
 
+interface ToastData {
+    message: string;
+    variant: 'success' | 'danger';
+    show: boolean;
+}
+
 const Dashboard : React.FC = () => {
     const { tasks, setTasks } = useContext(TaskContexts);
     const navigate = useNavigate();
+    const location = useLocation();
     const [filter, setFilter] = useState<string>("all");
+    const [toastData, setToastData] = useState<ToastData | undefined>(undefined);
+
+    useEffect(() => {
+        const state = location.state as { toast?: ToastData } | null;
+        if (state?.toast) {
+            setToastData(state.toast);
+            
+            setTimeout(() => {
+                setToastData(prev => prev ? { ...prev, show: false } : undefined);
+            }, 3000);
+        }
+    }, [location.state]);
 
     const completedTasks = tasks.filter(task => task.completed).length;
     const totalTasks = tasks.length;
@@ -72,7 +91,7 @@ const Dashboard : React.FC = () => {
     const filteredTasks = getFilteredTasks();
 
     return(
-        <PageLayout>
+        <PageLayout toastData={toastData}>
             <Container fluid className="py-4">
                 <Row className="mb-4">
                     <Col>

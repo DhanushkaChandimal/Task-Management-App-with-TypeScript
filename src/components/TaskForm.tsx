@@ -7,8 +7,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
-import Toast from "react-bootstrap/Toast";
-import ToastContainer from "react-bootstrap/ToastContainer";
 import { useNavigate, useParams } from "react-router-dom";
 import TaskContexts from "../context/TaskContexts";
 
@@ -50,9 +48,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
     });
     const [validated, setValidated] = useState<boolean>(false);
     const [error, setError] = useState<string>("");
-    const [toastMessage, setToastMessage] = useState<string>("");
-    const [showToast, setShowToast] = useState<boolean>(false);
-    const [toastVariant, setToastVariant] = useState<'success' | 'danger'>('success');
 
     useEffect(() => {
         if (isEditMode && id) {
@@ -66,16 +61,12 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
         }
     }, [id, tasks, isEditMode]);
 
-    const showToastNotification = (message: string, variant: 'success' | 'danger' = 'success') => {
-        setToastMessage(message);
-        setToastVariant(variant);
-        setShowToast(true);
-        
-        if (variant === 'success') {
-            setTimeout(() => {
-                navigate("/dashboard");
-            }, 2000);
-        }
+    const showToast = (message: string, variant: 'success' | 'danger' = 'success') => {
+        navigate("/dashboard", { 
+            state: { 
+                toast: { message, variant, show: true } 
+            } 
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -94,7 +85,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
                     );
                     setTasks(updatedTasks);
                 }
-                showToastNotification("🎉 Task updated successfully!");
+                showToast("🎉 Task updated successfully!", 'success');
             } else {
                 const newTask: TaskData = {
                     ...formData,
@@ -102,7 +93,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
                     completed: false
                 };
                 setTasks([...tasks, newTask]);
-                showToastNotification("✨ Task created successfully!");
+                showToast("✨ Task created successfully!", 'success');
             }
         }
         setValidated(true);
@@ -270,30 +261,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ mode = 'create' }) => {
                     </Col>
                 </Row>
             </Container>
-
-            <ToastContainer 
-                position="top-end" 
-                className="p-3"
-                style={{ zIndex: 9999 }}
-            >
-                <Toast 
-                    show={showToast} 
-                    onClose={() => setShowToast(false)} 
-                    delay={5000} 
-                    autohide
-                    bg={toastVariant}
-                >
-                    <Toast.Header>
-                        <strong className="me-auto">
-                            {toastVariant === 'success' ? '✅ Success' : '❌ Error'}
-                        </strong>
-                        <small>Just now</small>
-                    </Toast.Header>
-                    <Toast.Body className={toastVariant === 'success' ? 'text-white' : 'text-white'}>
-                        {toastMessage}
-                    </Toast.Body>
-                </Toast>
-            </ToastContainer>
         </PageLayout>
     );
 };
