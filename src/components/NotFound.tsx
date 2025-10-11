@@ -52,6 +52,28 @@ const NotFound: React.FC = () => {
                                         🏠 Go to Homepage
                                     </Button>
                                 </div>
+
+                                <div className="mt-5 pt-4 border-top">
+                                    <p className="text-muted mb-3">
+                                        Or try these helpful links:
+                                    </p>
+                                    <div className="d-flex flex-wrap gap-3 justify-content-center">
+                                        <Button 
+                                            variant="link" 
+                                            className="text-decoration-none p-0"
+                                            onClick={() => navigate("/dashboard")}
+                                        >
+                                            📊 Dashboard
+                                        </Button>
+                                        <Button 
+                                            variant="link" 
+                                            className="text-decoration-none p-0"
+                                            onClick={() => navigate("/create-task")}
+                                        >
+                                            ➕ Create Task
+                                        </Button>
+                                    </div>
+                                </div>
                             </Card.Body>
                         </Card>
                     </Col>
