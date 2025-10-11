@@ -11,6 +11,7 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
 import Dropdown from "react-bootstrap/Dropdown";
+import ProgressBar from "react-bootstrap/ProgressBar";
 import TaskContexts from "../context/TaskContexts";
 
 interface ToastData {
@@ -169,6 +170,29 @@ const Dashboard : React.FC = () => {
                                         <h5 className="text-muted mb-1">Progress</h5>
                                         <h3 className="mb-0">{Math.round(completionPercentage)}%</h3>
                                     </div>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+
+                <Row className="mb-4">
+                    <Col>
+                        <Card className="border-0 shadow-sm">
+                            <Card.Header className="bg-white border-0 pb-0">
+                                <h5 className="mb-0">Task Progress</h5>
+                            </Card.Header>
+                            <Card.Body>
+                                <div className="mb-3">
+                                    <div className="d-flex justify-content-between mb-2">
+                                        <span>Overall Completion</span>
+                                        <span className="fw-bold">{completedTasks}/{totalTasks} tasks</span>
+                                    </div>
+                                    <ProgressBar 
+                                        now={completionPercentage} 
+                                        variant={completionPercentage > 80 ? "success" : completionPercentage > 50 ? "warning" : "danger"}
+                                        style={{height: '10px'}}
+                                    />
                                 </div>
                             </Card.Body>
                         </Card>
