@@ -49,7 +49,20 @@ const Dashboard : React.FC = () => {
     };
 
     const deleteTask = (id: number) => {
+        const taskToDelete = tasks.find(task => task.id === id);
+        const taskTitle = taskToDelete ? taskToDelete.title : 'Task';
+        
         setTasks(tasks.filter(task => task.id !== id));
+        
+        setToastData({
+            message: `🗑️ "${taskTitle}" has been deleted successfully!`,
+            variant: 'success',
+            show: true
+        });
+        
+        setTimeout(() => {
+            setToastData(prev => prev ? { ...prev, show: false } : undefined);
+        }, 3000);
     };
 
     const getPriorityColor = (priority: string) => {
